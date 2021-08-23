@@ -5,11 +5,18 @@
 #include <rand.h>
 #include "fish.c"
 #include "rod.c"
+#include "can.c"
 
 struct fish {
         UINT8 x;
         UINT8 y;
         UINT8 sprites[2];
+};
+
+struct can {
+        UINT8 x;
+        UINT8 y;
+        UINT8 sprite;
 };
 
 struct rod {
@@ -19,6 +26,7 @@ struct rod {
 
 typedef struct fish Fish;
 typedef struct rod Rod;
+typedef struct can Can;
 
 Fish fish1;
 Rod fishingRod;
@@ -26,7 +34,7 @@ UINT8 i = 0;
 UINT16 seed;
 const UINT8 spriteSize = 8;
 
-void moveFishTo(Fish *f, UINT8 x, UINT8 y){
+void moveFishTo(Fish *f, UINT8 x, UINT8 y) {
         f->x = x;
         f->y = y;
         move_sprite(f->sprites[0], x, y);
@@ -44,6 +52,8 @@ void init() {
         fishingRod.hookSprite = 3;
         set_sprite_data(3, 3, ROD);
         set_sprite_tile(fishingRod.hookSprite, 3);
+        set_sprite_data(4, 4, CAN);
+        set_sprite_tile(4, 4);
         DISPLAY_ON;
         SHOW_SPRITES;
 }
@@ -63,28 +73,29 @@ void main() {
         // clear text
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         // draw initial string line
-        line(80,0,80,fishingRod.yHook-16);
+        line(80, 0, 80, fishingRod.yHook - 16);
         // game loop
         while(1) {
                 wait_vbl_done();
                 moveFishTo(&fish1, fish1.x + 1, fish1.y);
                 switch(joypad()) {
                 case J_UP:
-                        if(fishingRod.yHook>20) {
+                        if(fishingRod.yHook > 20) {
                                 fishingRod.yHook -= 1;
                                 // remove part of line that's too long
                                 color(WHITE, WHITE, SOLID);
-                                line(80, fishingRod.yHook-16, 80, fishingRod.yHook-14);
+                                line(80, fishingRod.yHook - 16, 80, fishingRod.yHook - 14);
                                 color(BLACK, BLACK, SOLID);
                         }
                         break;
                 case J_DOWN:
                         if(fishingRod.yHook<152) {
                                 fishingRod.yHook += 1;
-                                line(80, fishingRod.yHook-16, 80, fishingRod.yHook-17);
+                                line(80, fishingRod.yHook - 16, 80, fishingRod.yHook - 17);
                         }
                         break;
                 }
                 move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
+                move_sprite(4, 100, 100);
         }
 }

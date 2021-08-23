@@ -11,7 +11,6 @@
 	.globl _main
 	.globl _randomRange
 	.globl _init
-	.globl _renderRod
 	.globl _moveFishTo
 	.globl _rand
 	.globl _initrand
@@ -28,6 +27,7 @@
 	.globl _fishingRod
 	.globl _fish1
 	.globl _spriteSize
+	.globl _CAN
 	.globl _ROD
 	.globl _FISH
 ;--------------------------------------------------------
@@ -69,20 +69,20 @@ _i::
 ; code
 ;--------------------------------------------------------
 	.area _CODE
-;main.c:29: void moveFishTo(Fish *f, UINT8 x, UINT8 y){
+;main.c:37: void moveFishTo(Fish *f, UINT8 x, UINT8 y) {
 ;	---------------------------------
 ; Function moveFishTo
 ; ---------------------------------
 _moveFishTo::
 	dec	sp
 	dec	sp
-;main.c:30: f->x = x;
+;main.c:38: f->x = x;
 	ldhl	sp,	#4
 	ld	a, (hl+)
 	ld	e, a
 	ld	a, (hl+)
 	ld	d, a
-;main.c:31: f->y = y;
+;main.c:39: f->y = y;
 	ld	a, (hl+)
 	ld	(de), a
 	ld	c, e
@@ -90,7 +90,7 @@ _moveFishTo::
 	inc	bc
 	ld	a, (hl)
 	ld	(bc), a
-;main.c:32: move_sprite(f->sprites[0], x, y);
+;main.c:40: move_sprite(f->sprites[0], x, y);
 	ld	a, (hl)
 	ldhl	sp,	#0
 	ld	(hl), a
@@ -126,7 +126,7 @@ _moveFishTo::
 	inc	bc
 	ld	a, (hl)
 	ld	(bc), a
-;main.c:33: move_sprite(f->sprites[1], x-spriteSize, y);
+;main.c:41: move_sprite(f->sprites[1], x-spriteSize, y);
 ;setupPair	HL
 	ld	hl, #_spriteSize
 	ld	c, (hl)
@@ -158,8 +158,8 @@ _moveFishTo::
 	inc	de
 	ld	a, c
 	ld	(de), a
-;main.c:33: move_sprite(f->sprites[1], x-spriteSize, y);
-;main.c:34: }
+;main.c:41: move_sprite(f->sprites[1], x-spriteSize, y);
+;main.c:42: }
 	inc	sp
 	inc	sp
 	ret
@@ -213,41 +213,51 @@ _ROD:
 	.db #0x24	; 36
 	.db #0x00	; 0
 	.db #0x18	; 24
+_CAN:
+	.db #0x00	; 0
+	.db #0x01	; 1
+	.db #0x00	; 0
+	.db #0x02	; 2
+	.db #0x00	; 0
+	.db #0x12	; 18
+	.db #0x10	; 16
+	.db #0x2a	; 42
+	.db #0x38	; 56	'8'
+	.db #0x44	; 68	'D'
+	.db #0x70	; 112	'p'
+	.db #0x88	; 136
+	.db #0x20	; 32
+	.db #0x50	; 80	'P'
+	.db #0x00	; 0
+	.db #0x20	; 32
 _spriteSize:
 	.db #0x08	; 8
-;main.c:36: void renderRod(){
-;	---------------------------------
-; Function renderRod
-; ---------------------------------
-_renderRod::
-;main.c:38: }
-	ret
-;main.c:40: void init() {
+;main.c:44: void init() {
 ;	---------------------------------
 ; Function init
 ; ---------------------------------
 _init::
-;main.c:41: fish1.sprites[0] = 1;
+;main.c:45: fish1.sprites[0] = 1;
 	ld	hl, #(_fish1 + 2)
 	ld	(hl), #0x01
-;main.c:42: fish1.sprites[1] = 2;
+;main.c:46: fish1.sprites[1] = 2;
 	ld	hl, #(_fish1 + 3)
 	ld	(hl), #0x02
-;main.c:43: moveFishTo(&fish1, 20, 30);
+;main.c:47: moveFishTo(&fish1, 20, 30);
 	ld	hl, #0x1e14
 	push	hl
 	ld	de, #_fish1
 	push	de
 	call	_moveFishTo
 	add	sp, #4
-;main.c:44: set_sprite_data(1, 2, FISH);
+;main.c:48: set_sprite_data(1, 2, FISH);
 	ld	de, #_FISH
 	push	de
 	ld	hl, #0x201
 	push	hl
 	call	_set_sprite_data
 	add	sp, #4
-;main.c:45: set_sprite_tile(fish1.sprites[0], 1);
+;main.c:49: set_sprite_tile(fish1.sprites[0], 1);
 	ld	hl, #(_fish1 + 2)
 	ld	c, (hl)
 ;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
@@ -262,7 +272,7 @@ _init::
 	inc	hl
 	inc	hl
 	ld	(hl), #0x01
-;main.c:46: set_sprite_tile(fish1.sprites[1], 2);
+;main.c:50: set_sprite_tile(fish1.sprites[1], 2);
 	ld	hl, #(_fish1 + 3)
 	ld	c, (hl)
 ;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
@@ -277,21 +287,21 @@ _init::
 	inc	hl
 	inc	hl
 	ld	(hl), #0x02
-;main.c:47: fishingRod.yHook = 100;
+;main.c:51: fishingRod.yHook = 100;
 	ld	hl, #_fishingRod
 	ld	(hl), #0x64
-;main.c:48: fishingRod.hookSprite = 3;
+;main.c:52: fishingRod.hookSprite = 3;
 	ld	bc, #_fishingRod+1
 	ld	a, #0x03
 	ld	(bc), a
-;main.c:49: set_sprite_data(3, 3, ROD);
+;main.c:53: set_sprite_data(3, 3, ROD);
 	ld	de, #_ROD
 	push	de
 	ld	hl, #0x303
 	push	hl
 	call	_set_sprite_data
 	add	sp, #4
-;main.c:50: set_sprite_tile(fishingRod.hookSprite, 3);
+;main.c:54: set_sprite_tile(fishingRod.hookSprite, 3);
 	ld	a, (bc)
 	ld	c, a
 ;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
@@ -306,22 +316,32 @@ _init::
 	inc	hl
 	inc	hl
 	ld	(hl), #0x03
-;main.c:51: DISPLAY_ON;
+;main.c:55: set_sprite_data(4, 4, CAN);
+	ld	de, #_CAN
+	push	de
+	ld	hl, #0x404
+	push	hl
+	call	_set_sprite_data
+	add	sp, #4
+;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
+	ld	hl, #(_shadow_OAM + 18)
+	ld	(hl), #0x04
+;main.c:57: DISPLAY_ON;
 	ldh	a, (_LCDC_REG + 0)
 	or	a, #0x80
 	ldh	(_LCDC_REG + 0), a
-;main.c:52: SHOW_SPRITES;
+;main.c:58: SHOW_SPRITES;
 	ldh	a, (_LCDC_REG + 0)
 	or	a, #0x02
 	ldh	(_LCDC_REG + 0), a
-;main.c:53: }
+;main.c:59: }
 	ret
-;main.c:55: UINT8 randomRange(UINT8 start, UINT8 end) {
+;main.c:61: UINT8 randomRange(UINT8 start, UINT8 end) {
 ;	---------------------------------
 ; Function randomRange
 ; ---------------------------------
 _randomRange::
-;main.c:56: return start + ((UINT8)rand()) % (end - start + (UINT8)1);
+;main.c:62: return start + ((UINT8)rand()) % (end - start + (UINT8)1);
 	call	_rand
 	ldhl	sp,	#3
 	ld	a, (hl-)
@@ -343,33 +363,33 @@ _randomRange::
 	ld	a, (hl)
 	add	a, e
 	ld	e, a
-;main.c:57: }
+;main.c:63: }
 	ret
-;main.c:59: void main() {
+;main.c:65: void main() {
 ;	---------------------------------
 ; Function main
 ; ---------------------------------
 _main::
-;main.c:60: init();
+;main.c:66: init();
 	call	_init
-;main.c:62: printf("PRESS START!");
+;main.c:68: printf("PRESS START!");
 	ld	de, #___str_0
 	push	de
 	call	_printf
 	pop	hl
-;main.c:63: waitpad(J_START);
+;main.c:69: waitpad(J_START);
 	ld	a, #0x80
 	push	af
 	inc	sp
 	call	_waitpad
 	inc	sp
-;main.c:64: seed = LY_REG;
+;main.c:70: seed = LY_REG;
 	ldh	a, (_LY_REG + 0)
 ;setupPair	HL
 	ld	hl, #_seed
 ;setupPair	HL
 	ld	(hl+), a
-;main.c:65: seed |= (UINT16)DIV_REG << 8;
+;main.c:71: seed |= (UINT16)DIV_REG << 8;
 ;setupPair	HL
 	xor	a, a
 	ld	(hl-), a
@@ -383,7 +403,7 @@ _main::
 	ld	a, c
 	or	a, (hl)
 ;setupPair	HL
-;main.c:66: initrand(seed);
+;main.c:72: initrand(seed);
 ;setupPair	HL
 	ld	(hl-), a
 ;setupPair	HL
@@ -393,12 +413,12 @@ _main::
 	push	bc
 	call	_initrand
 	pop	hl
-;main.c:68: printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+;main.c:74: printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	ld	de, #___str_2
 	push	de
 	call	_puts
 	pop	hl
-;main.c:70: line(80,0,80,fishingRod.yHook-16);
+;main.c:76: line(80, 0, 80, fishingRod.yHook - 16);
 	ld	a, (#_fishingRod + 0)
 	add	a, #0xf0
 	ld	h, a
@@ -408,11 +428,11 @@ _main::
 	push	hl
 	call	_line
 	add	sp, #4
-;main.c:72: while(1) {
+;main.c:78: while(1) {
 00109$:
-;main.c:73: wait_vbl_done();
+;main.c:79: wait_vbl_done();
 	call	_wait_vbl_done
-;main.c:74: moveFishTo(&fish1, fish1.x + 1, fish1.y);
+;main.c:80: moveFishTo(&fish1, fish1.x + 1, fish1.y);
 	ld	bc, #_fish1+0
 	ld	l, c
 ;	spillPairReg hl
@@ -434,32 +454,32 @@ _main::
 	push	bc
 	call	_moveFishTo
 	add	sp, #4
-;main.c:75: switch(joypad()) {
+;main.c:81: switch(joypad()) {
 	call	_joypad
 	ld	a, e
-;main.c:70: line(80,0,80,fishingRod.yHook-16);
+;main.c:76: line(80, 0, 80, fishingRod.yHook - 16);
 	ld	hl, #_fishingRod
 	ld	l, (hl)
 ;	spillPairReg hl
-;main.c:78: fishingRod.yHook -= 1;
+;main.c:84: fishingRod.yHook -= 1;
 	ld	c, l
-;main.c:75: switch(joypad()) {
+;main.c:81: switch(joypad()) {
 	cp	a, #0x04
 	jr	Z, 00101$
 	sub	a, #0x08
 	jr	Z, 00104$
 	jr	00107$
-;main.c:76: case J_UP:
+;main.c:82: case J_UP:
 00101$:
-;main.c:77: if(fishingRod.yHook>20) {
+;main.c:83: if(fishingRod.yHook > 20) {
 	ld	a, #0x14
 	sub	a, l
 	jr	NC, 00107$
-;main.c:78: fishingRod.yHook -= 1;
+;main.c:84: fishingRod.yHook -= 1;
 	dec	c
 	ld	hl, #_fishingRod
 	ld	(hl), c
-;main.c:80: color(WHITE, WHITE, SOLID);
+;main.c:86: color(WHITE, WHITE, SOLID);
 	xor	a, a
 	rrca
 	push	af
@@ -468,10 +488,10 @@ _main::
 	inc	sp
 	call	_color
 	add	sp, #3
-;main.c:70: line(80,0,80,fishingRod.yHook-16);
+;main.c:76: line(80, 0, 80, fishingRod.yHook - 16);
 	ld	a, (#_fishingRod + 0)
-;main.c:78: fishingRod.yHook -= 1;
-;main.c:81: line(80, fishingRod.yHook-16, 80, fishingRod.yHook-14);
+;main.c:84: fishingRod.yHook -= 1;
+;main.c:87: line(80, fishingRod.yHook - 16, 80, fishingRod.yHook - 14);
 	ld	c, a
 	add	a, #0xf2
 	ld	b, a
@@ -489,7 +509,7 @@ _main::
 	push	hl
 	call	_line
 	add	sp, #4
-;main.c:82: color(BLACK, BLACK, SOLID);
+;main.c:88: color(BLACK, BLACK, SOLID);
 	xor	a, a
 	ld	h, a
 	ld	l, #0x03
@@ -499,22 +519,22 @@ _main::
 	inc	sp
 	call	_color
 	add	sp, #3
-;main.c:84: break;
+;main.c:90: break;
 	jr	00107$
-;main.c:85: case J_DOWN:
+;main.c:91: case J_DOWN:
 00104$:
-;main.c:86: if(fishingRod.yHook<152) {
+;main.c:92: if(fishingRod.yHook<152) {
 	ld	a, l
 	sub	a, #0x98
 	jr	NC, 00107$
-;main.c:87: fishingRod.yHook += 1;
+;main.c:93: fishingRod.yHook += 1;
 	inc	c
 	ld	hl, #_fishingRod
 	ld	(hl), c
-;main.c:70: line(80,0,80,fishingRod.yHook-16);
+;main.c:76: line(80, 0, 80, fishingRod.yHook - 16);
 	ld	a, (#_fishingRod + 0)
-;main.c:78: fishingRod.yHook -= 1;
-;main.c:88: line(80, fishingRod.yHook-16, 80, fishingRod.yHook-17);
+;main.c:84: fishingRod.yHook -= 1;
+;main.c:94: line(80, fishingRod.yHook - 16, 80, fishingRod.yHook - 17);
 	ld	c, a
 	add	a, #0xef
 	ld	b, a
@@ -532,9 +552,9 @@ _main::
 	push	hl
 	call	_line
 	add	sp, #4
-;main.c:91: }
+;main.c:97: }
 00107$:
-;main.c:92: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
+;main.c:98: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
 	ld	hl, #_fishingRod
 	ld	c, (hl)
 	ld	hl, #(_fishingRod + 1)
@@ -553,8 +573,14 @@ _main::
 	ld	a, c
 	ld	(hl+), a
 	ld	(hl), #0x54
-;main.c:92: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
-;main.c:94: }
+;c:/gbdk/include/gb/gb.h:1247: OAM_item_t * itm = &shadow_OAM[nb];
+	ld	hl, #(_shadow_OAM + 16)
+;c:/gbdk/include/gb/gb.h:1248: itm->y=y, itm->x=x;
+	ld	a, #0x64
+	ld	(hl+), a
+	ld	(hl), #0x64
+;main.c:99: move_sprite(4, 100, 100);
+;main.c:101: }
 	jp	00109$
 ___str_0:
 	.ascii "PRESS START!"
