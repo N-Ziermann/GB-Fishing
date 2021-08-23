@@ -1,8 +1,8 @@
 #include <gb/gb.h>
+#include <gb/drawing.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <rand.h>
-#include <gb/drawing.h>
 #include "fish.c"
 #include "rod.c"
 
@@ -12,7 +12,6 @@ struct fish {
         UINT8 sprites[2];
 };
 
-// remove string sprite later
 struct rod {
         UINT8 yHook;
         UINT8 hookSprite;
@@ -32,10 +31,6 @@ void moveFishTo(Fish *f, UINT8 x, UINT8 y){
         f->y = y;
         move_sprite(f->sprites[0], x, y);
         move_sprite(f->sprites[1], x-spriteSize, y);
-}
-
-void renderRod(){
-
 }
 
 void init() {
@@ -67,23 +62,26 @@ void main() {
         initrand(seed);
         // clear text
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        // draw initial string line
+        line(80,0,80,fishingRod.yHook-16);
         // game loop
         while(1) {
                 wait_vbl_done();
                 moveFishTo(&fish1, fish1.x + 1, fish1.y);
-                line(80,0,80,fishingRod.yHook-16);
                 switch(joypad()) {
                 case J_UP:
                         if(fishingRod.yHook>20) {
                                 fishingRod.yHook -= 1;
+                                // remove part of line that's too long
                                 color(WHITE, WHITE, SOLID);
-                                line(80, fishingRod.yHook-16, 80, fishingRod.yHook-15);
+                                line(80, fishingRod.yHook-16, 80, fishingRod.yHook-14);
                                 color(BLACK, BLACK, SOLID);
                         }
                         break;
                 case J_DOWN:
                         if(fishingRod.yHook<152) {
                                 fishingRod.yHook += 1;
+                                line(80, fishingRod.yHook-16, 80, fishingRod.yHook-17);
                         }
                         break;
                 }

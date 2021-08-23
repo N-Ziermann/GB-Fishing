@@ -13,12 +13,12 @@
                                      13 	.globl _init
                                      14 	.globl _renderRod
                                      15 	.globl _moveFishTo
-                                     16 	.globl _color
-                                     17 	.globl _line
-                                     18 	.globl _rand
-                                     19 	.globl _initrand
-                                     20 	.globl _puts
-                                     21 	.globl _printf
+                                     16 	.globl _rand
+                                     17 	.globl _initrand
+                                     18 	.globl _puts
+                                     19 	.globl _printf
+                                     20 	.globl _color
+                                     21 	.globl _line
                                      22 	.globl _set_sprite_data
                                      23 	.globl _wait_vbl_done
                                      24 	.globl _waitpad
@@ -69,20 +69,20 @@
                                      69 ; code
                                      70 ;--------------------------------------------------------
                                      71 	.area _CODE
-                                     72 ;main.c:30: void moveFishTo(Fish *f, UINT8 x, UINT8 y){
+                                     72 ;main.c:29: void moveFishTo(Fish *f, UINT8 x, UINT8 y){
                                      73 ;	---------------------------------
                                      74 ; Function moveFishTo
                                      75 ; ---------------------------------
       000000                         76 _moveFishTo::
       000000 3B                      77 	dec	sp
       000001 3B                      78 	dec	sp
-                                     79 ;main.c:31: f->x = x;
+                                     79 ;main.c:30: f->x = x;
       000002 F8 04                   80 	ldhl	sp,	#4
       000004 2A                      81 	ld	a, (hl+)
       000005 5F                      82 	ld	e, a
       000006 2A                      83 	ld	a, (hl+)
       000007 57                      84 	ld	d, a
-                                     85 ;main.c:32: f->y = y;
+                                     85 ;main.c:31: f->y = y;
       000008 2A                      86 	ld	a, (hl+)
       000009 12                      87 	ld	(de), a
       00000A 4B                      88 	ld	c, e
@@ -90,7 +90,7 @@
       00000C 03                      90 	inc	bc
       00000D 7E                      91 	ld	a, (hl)
       00000E 02                      92 	ld	(bc), a
-                                     93 ;main.c:33: move_sprite(f->sprites[0], x, y);
+                                     93 ;main.c:32: move_sprite(f->sprites[0], x, y);
       00000F 7E                      94 	ld	a, (hl)
       000010 F8 00                   95 	ldhl	sp,	#0
       000012 77                      96 	ld	(hl), a
@@ -126,7 +126,7 @@
       00002C 03                     126 	inc	bc
       00002D 7E                     127 	ld	a, (hl)
       00002E 02                     128 	ld	(bc), a
-                                    129 ;main.c:34: move_sprite(f->sprites[1], x-spriteSize, y);
+                                    129 ;main.c:33: move_sprite(f->sprites[1], x-spriteSize, y);
                                     130 ;setupPair	HL
       00002F 21r81r00               131 	ld	hl, #_spriteSize
       000032 4E                     132 	ld	c, (hl)
@@ -158,8 +158,8 @@
       00004B 13                     158 	inc	de
       00004C 79                     159 	ld	a, c
       00004D 12                     160 	ld	(de), a
-                                    161 ;main.c:34: move_sprite(f->sprites[1], x-spriteSize, y);
-                                    162 ;main.c:35: }
+                                    161 ;main.c:33: move_sprite(f->sprites[1], x-spriteSize, y);
+                                    162 ;main.c:34: }
       00004E 33                     163 	inc	sp
       00004F 33                     164 	inc	sp
       000050 C9                     165 	ret
@@ -215,39 +215,39 @@
       000080 18                     215 	.db #0x18	; 24
       000081                        216 _spriteSize:
       000081 08                     217 	.db #0x08	; 8
-                                    218 ;main.c:37: void renderRod(){
+                                    218 ;main.c:36: void renderRod(){
                                     219 ;	---------------------------------
                                     220 ; Function renderRod
                                     221 ; ---------------------------------
       000082                        222 _renderRod::
-                                    223 ;main.c:39: }
+                                    223 ;main.c:38: }
       000082 C9                     224 	ret
-                                    225 ;main.c:41: void init() {
+                                    225 ;main.c:40: void init() {
                                     226 ;	---------------------------------
                                     227 ; Function init
                                     228 ; ---------------------------------
       000083                        229 _init::
-                                    230 ;main.c:42: fish1.sprites[0] = 1;
+                                    230 ;main.c:41: fish1.sprites[0] = 1;
       000083 21r02r00               231 	ld	hl, #(_fish1 + 2)
       000086 36 01                  232 	ld	(hl), #0x01
-                                    233 ;main.c:43: fish1.sprites[1] = 2;
+                                    233 ;main.c:42: fish1.sprites[1] = 2;
       000088 21r03r00               234 	ld	hl, #(_fish1 + 3)
       00008B 36 02                  235 	ld	(hl), #0x02
-                                    236 ;main.c:44: moveFishTo(&fish1, 20, 30);
+                                    236 ;main.c:43: moveFishTo(&fish1, 20, 30);
       00008D 21 14 1E               237 	ld	hl, #0x1e14
       000090 E5                     238 	push	hl
       000091 11r00r00               239 	ld	de, #_fish1
       000094 D5                     240 	push	de
       000095 CDr00r00               241 	call	_moveFishTo
       000098 E8 04                  242 	add	sp, #4
-                                    243 ;main.c:45: set_sprite_data(1, 2, FISH);
+                                    243 ;main.c:44: set_sprite_data(1, 2, FISH);
       00009A 11r51r00               244 	ld	de, #_FISH
       00009D D5                     245 	push	de
       00009E 21 01 02               246 	ld	hl, #0x201
       0000A1 E5                     247 	push	hl
       0000A2 CDr00r00               248 	call	_set_sprite_data
       0000A5 E8 04                  249 	add	sp, #4
-                                    250 ;main.c:46: set_sprite_tile(fish1.sprites[0], 1);
+                                    250 ;main.c:45: set_sprite_tile(fish1.sprites[0], 1);
       0000A7 21r02r00               251 	ld	hl, #(_fish1 + 2)
       0000AA 4E                     252 	ld	c, (hl)
                                     253 ;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
@@ -262,7 +262,7 @@
       0000B4 23                     262 	inc	hl
       0000B5 23                     263 	inc	hl
       0000B6 36 01                  264 	ld	(hl), #0x01
-                                    265 ;main.c:47: set_sprite_tile(fish1.sprites[1], 2);
+                                    265 ;main.c:46: set_sprite_tile(fish1.sprites[1], 2);
       0000B8 21r03r00               266 	ld	hl, #(_fish1 + 3)
       0000BB 4E                     267 	ld	c, (hl)
                                     268 ;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
@@ -277,21 +277,21 @@
       0000C5 23                     277 	inc	hl
       0000C6 23                     278 	inc	hl
       0000C7 36 02                  279 	ld	(hl), #0x02
-                                    280 ;main.c:48: fishingRod.yHook = 100;
+                                    280 ;main.c:47: fishingRod.yHook = 100;
       0000C9 21r04r00               281 	ld	hl, #_fishingRod
       0000CC 36 64                  282 	ld	(hl), #0x64
-                                    283 ;main.c:49: fishingRod.hookSprite = 3;
+                                    283 ;main.c:48: fishingRod.hookSprite = 3;
       0000CE 01r05r00               284 	ld	bc, #_fishingRod+1
       0000D1 3E 03                  285 	ld	a, #0x03
       0000D3 02                     286 	ld	(bc), a
-                                    287 ;main.c:50: set_sprite_data(3, 3, ROD);
+                                    287 ;main.c:49: set_sprite_data(3, 3, ROD);
       0000D4 11r71r00               288 	ld	de, #_ROD
       0000D7 D5                     289 	push	de
       0000D8 21 03 03               290 	ld	hl, #0x303
       0000DB E5                     291 	push	hl
       0000DC CDr00r00               292 	call	_set_sprite_data
       0000DF E8 04                  293 	add	sp, #4
-                                    294 ;main.c:51: set_sprite_tile(fishingRod.hookSprite, 3);
+                                    294 ;main.c:50: set_sprite_tile(fishingRod.hookSprite, 3);
       0000E1 0A                     295 	ld	a, (bc)
       0000E2 4F                     296 	ld	c, a
                                     297 ;c:/gbdk/include/gb/gb.h:1174: shadow_OAM[nb].tile=tile;
@@ -306,22 +306,22 @@
       0000EC 23                     306 	inc	hl
       0000ED 23                     307 	inc	hl
       0000EE 36 03                  308 	ld	(hl), #0x03
-                                    309 ;main.c:52: DISPLAY_ON;
+                                    309 ;main.c:51: DISPLAY_ON;
       0000F0 F0r00                  310 	ldh	a, (_LCDC_REG + 0)
       0000F2 F6 80                  311 	or	a, #0x80
       0000F4 E0r00                  312 	ldh	(_LCDC_REG + 0), a
-                                    313 ;main.c:53: SHOW_SPRITES;
+                                    313 ;main.c:52: SHOW_SPRITES;
       0000F6 F0r00                  314 	ldh	a, (_LCDC_REG + 0)
       0000F8 F6 02                  315 	or	a, #0x02
       0000FA E0r00                  316 	ldh	(_LCDC_REG + 0), a
-                                    317 ;main.c:54: }
+                                    317 ;main.c:53: }
       0000FC C9                     318 	ret
-                                    319 ;main.c:56: UINT8 randomRange(UINT8 start, UINT8 end) {
+                                    319 ;main.c:55: UINT8 randomRange(UINT8 start, UINT8 end) {
                                     320 ;	---------------------------------
                                     321 ; Function randomRange
                                     322 ; ---------------------------------
       0000FD                        323 _randomRange::
-                                    324 ;main.c:57: return start + ((UINT8)rand()) % (end - start + (UINT8)1);
+                                    324 ;main.c:56: return start + ((UINT8)rand()) % (end - start + (UINT8)1);
       0000FD CDr00r00               325 	call	_rand
       000100 F8 03                  326 	ldhl	sp,	#3
       000102 3A                     327 	ld	a, (hl-)
@@ -343,33 +343,33 @@
       000119 7E                     343 	ld	a, (hl)
       00011A 83                     344 	add	a, e
       00011B 5F                     345 	ld	e, a
-                                    346 ;main.c:58: }
+                                    346 ;main.c:57: }
       00011C C9                     347 	ret
-                                    348 ;main.c:60: void main() {
+                                    348 ;main.c:59: void main() {
                                     349 ;	---------------------------------
                                     350 ; Function main
                                     351 ; ---------------------------------
       00011D                        352 _main::
-                                    353 ;main.c:61: init();
+                                    353 ;main.c:60: init();
       00011D CDr83r00               354 	call	_init
-                                    355 ;main.c:63: printf("PRESS START!");
-      000120 11rEAr01               356 	ld	de, #___str_0
+                                    355 ;main.c:62: printf("PRESS START!");
+      000120 11r05r02               356 	ld	de, #___str_0
       000123 D5                     357 	push	de
       000124 CDr00r00               358 	call	_printf
       000127 E1                     359 	pop	hl
-                                    360 ;main.c:64: waitpad(J_START);
+                                    360 ;main.c:63: waitpad(J_START);
       000128 3E 80                  361 	ld	a, #0x80
       00012A F5                     362 	push	af
       00012B 33                     363 	inc	sp
       00012C CDr00r00               364 	call	_waitpad
       00012F 33                     365 	inc	sp
-                                    366 ;main.c:65: seed = LY_REG;
+                                    366 ;main.c:64: seed = LY_REG;
       000130 F0r00                  367 	ldh	a, (_LY_REG + 0)
                                     368 ;setupPair	HL
       000132 21r06r00               369 	ld	hl, #_seed
                                     370 ;setupPair	HL
       000135 22                     371 	ld	(hl+), a
-                                    372 ;main.c:66: seed |= (UINT16)DIV_REG << 8;
+                                    372 ;main.c:65: seed |= (UINT16)DIV_REG << 8;
                                     373 ;setupPair	HL
       000136 AF                     374 	xor	a, a
       000137 32                     375 	ld	(hl-), a
@@ -383,7 +383,7 @@
       00013E 79                     383 	ld	a, c
       00013F B6                     384 	or	a, (hl)
                                     385 ;setupPair	HL
-                                    386 ;main.c:67: initrand(seed);
+                                    386 ;main.c:66: initrand(seed);
                                     387 ;setupPair	HL
       000140 32                     388 	ld	(hl-), a
                                     389 ;setupPair	HL
@@ -393,179 +393,194 @@
       000144 C5                     393 	push	bc
       000145 CDr00r00               394 	call	_initrand
       000148 E1                     395 	pop	hl
-                                    396 ;main.c:69: printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-      000149 11rF7r01               397 	ld	de, #___str_2
+                                    396 ;main.c:68: printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+      000149 11r12r02               397 	ld	de, #___str_2
       00014C D5                     398 	push	de
       00014D CDr00r00               399 	call	_puts
       000150 E1                     400 	pop	hl
-                                    401 ;main.c:71: while(1) {
-      000151                        402 00109$:
-                                    403 ;main.c:72: wait_vbl_done();
-      000151 CDr00r00               404 	call	_wait_vbl_done
-                                    405 ;main.c:73: moveFishTo(&fish1, fish1.x + 1, fish1.y);
-      000154 01r00r00               406 	ld	bc, #_fish1+0
-      000157 69                     407 	ld	l, c
-                                    408 ;	spillPairReg hl
-                                    409 ;	spillPairReg hl
-      000158 60                     410 	ld	h, b
-                                    411 ;	spillPairReg hl
-                                    412 ;	spillPairReg hl
-      000159 23                     413 	inc	hl
-      00015A 56                     414 	ld	d, (hl)
-      00015B 0A                     415 	ld	a, (bc)
-      00015C 3C                     416 	inc	a
-      00015D D5                     417 	push	de
-      00015E 33                     418 	inc	sp
-      00015F F5                     419 	push	af
-      000160 33                     420 	inc	sp
-      000161 C5                     421 	push	bc
-      000162 CDr00r00               422 	call	_moveFishTo
-      000165 E8 04                  423 	add	sp, #4
-                                    424 ;main.c:74: line(80,0,80,fishingRod.yHook-16);
-      000167 01r04r00               425 	ld	bc, #_fishingRod+0
-      00016A 0A                     426 	ld	a, (bc)
-      00016B C6 F0                  427 	add	a, #0xf0
-      00016D C5                     428 	push	bc
-      00016E 67                     429 	ld	h, a
-      00016F 2E 50                  430 	ld	l, #0x50
-      000171 E5                     431 	push	hl
-      000172 21 50 00               432 	ld	hl, #0x50
-      000175 E5                     433 	push	hl
-      000176 CDr00r00               434 	call	_line
-      000179 E8 04                  435 	add	sp, #4
-      00017B C1                     436 	pop	bc
+                                    401 ;main.c:70: line(80,0,80,fishingRod.yHook-16);
+      000151 FAr04r00               402 	ld	a, (#_fishingRod + 0)
+      000154 C6 F0                  403 	add	a, #0xf0
+      000156 67                     404 	ld	h, a
+      000157 2E 50                  405 	ld	l, #0x50
+      000159 E5                     406 	push	hl
+      00015A 21 50 00               407 	ld	hl, #0x50
+      00015D E5                     408 	push	hl
+      00015E CDr00r00               409 	call	_line
+      000161 E8 04                  410 	add	sp, #4
+                                    411 ;main.c:72: while(1) {
+      000163                        412 00109$:
+                                    413 ;main.c:73: wait_vbl_done();
+      000163 CDr00r00               414 	call	_wait_vbl_done
+                                    415 ;main.c:74: moveFishTo(&fish1, fish1.x + 1, fish1.y);
+      000166 01r00r00               416 	ld	bc, #_fish1+0
+      000169 69                     417 	ld	l, c
+                                    418 ;	spillPairReg hl
+                                    419 ;	spillPairReg hl
+      00016A 60                     420 	ld	h, b
+                                    421 ;	spillPairReg hl
+                                    422 ;	spillPairReg hl
+      00016B 23                     423 	inc	hl
+      00016C 5E                     424 	ld	e, (hl)
+      00016D 0A                     425 	ld	a, (bc)
+      00016E 3C                     426 	inc	a
+      00016F 63                     427 	ld	h, e
+                                    428 ;	spillPairReg hl
+                                    429 ;	spillPairReg hl
+      000170 E5                     430 	push	hl
+      000171 33                     431 	inc	sp
+      000172 F5                     432 	push	af
+      000173 33                     433 	inc	sp
+      000174 C5                     434 	push	bc
+      000175 CDr00r00               435 	call	_moveFishTo
+      000178 E8 04                  436 	add	sp, #4
                                     437 ;main.c:75: switch(joypad()) {
-      00017C CDr00r00               438 	call	_joypad
-      00017F 7B                     439 	ld	a, e
-                                    440 ;main.c:74: line(80,0,80,fishingRod.yHook-16);
-      000180 F5                     441 	push	af
-      000181 0A                     442 	ld	a, (bc)
-      000182 5F                     443 	ld	e, a
-      000183 F1                     444 	pop	af
-                                    445 ;main.c:78: fishingRod.yHook -= 1;
-      000184 6B                     446 	ld	l, e
-                                    447 ;	spillPairReg hl
-                                    448 ;	spillPairReg hl
-                                    449 ;main.c:75: switch(joypad()) {
-      000185 FE 04                  450 	cp	a, #0x04
-      000187 28 06                  451 	jr	Z, 00101$
-      000189 D6 08                  452 	sub	a, #0x08
-      00018B 28 40                  453 	jr	Z, 00104$
-      00018D 18 46                  454 	jr	00107$
-                                    455 ;main.c:76: case J_UP:
-      00018F                        456 00101$:
-                                    457 ;main.c:77: if(fishingRod.yHook>20) {
-      00018F 3E 14                  458 	ld	a, #0x14
-      000191 93                     459 	sub	a, e
-      000192 30 41                  460 	jr	NC, 00107$
-                                    461 ;main.c:78: fishingRod.yHook -= 1;
-      000194 7D                     462 	ld	a, l
-      000195 3D                     463 	dec	a
-      000196 02                     464 	ld	(bc), a
-                                    465 ;main.c:79: color(WHITE, WHITE, SOLID);
-      000197 C5                     466 	push	bc
-      000198 AF                     467 	xor	a, a
-      000199 0F                     468 	rrca
-      00019A F5                     469 	push	af
-      00019B AF                     470 	xor	a, a
-      00019C F5                     471 	push	af
-      00019D 33                     472 	inc	sp
-      00019E CDr00r00               473 	call	_color
-      0001A1 E8 03                  474 	add	sp, #3
-      0001A3 C1                     475 	pop	bc
-                                    476 ;main.c:74: line(80,0,80,fishingRod.yHook-16);
-      0001A4 0A                     477 	ld	a, (bc)
-                                    478 ;main.c:78: fishingRod.yHook -= 1;
-                                    479 ;main.c:80: line(80, fishingRod.yHook-16, 80, fishingRod.yHook-15);
-      0001A5 5F                     480 	ld	e, a
-      0001A6 C6 F1                  481 	add	a, #0xf1
-      0001A8 57                     482 	ld	d, a
-      0001A9 7B                     483 	ld	a, e
-      0001AA C6 F0                  484 	add	a, #0xf0
-      0001AC C5                     485 	push	bc
-      0001AD D5                     486 	push	de
-      0001AE 33                     487 	inc	sp
-      0001AF 26 50                  488 	ld	h, #0x50
-                                    489 ;	spillPairReg hl
-                                    490 ;	spillPairReg hl
-      0001B1 E5                     491 	push	hl
-      0001B2 33                     492 	inc	sp
-      0001B3 67                     493 	ld	h, a
-      0001B4 2E 50                  494 	ld	l, #0x50
-      0001B6 E5                     495 	push	hl
-      0001B7 CDr00r00               496 	call	_line
-      0001BA E8 04                  497 	add	sp, #4
-      0001BC AF                     498 	xor	a, a
-      0001BD 67                     499 	ld	h, a
-      0001BE 2E 03                  500 	ld	l, #0x03
-      0001C0 E5                     501 	push	hl
-      0001C1 3E 03                  502 	ld	a, #0x03
-      0001C3 F5                     503 	push	af
-      0001C4 33                     504 	inc	sp
-      0001C5 CDr00r00               505 	call	_color
-      0001C8 E8 03                  506 	add	sp, #3
-      0001CA C1                     507 	pop	bc
-                                    508 ;main.c:83: break;
-      0001CB 18 08                  509 	jr	00107$
-                                    510 ;main.c:84: case J_DOWN:
-      0001CD                        511 00104$:
-                                    512 ;main.c:85: if(fishingRod.yHook<152) {
-      0001CD 7B                     513 	ld	a, e
-      0001CE D6 98                  514 	sub	a, #0x98
-      0001D0 30 03                  515 	jr	NC, 00107$
-                                    516 ;main.c:86: fishingRod.yHook += 1;
-      0001D2 7D                     517 	ld	a, l
-      0001D3 3C                     518 	inc	a
-      0001D4 02                     519 	ld	(bc), a
-                                    520 ;main.c:89: }
-      0001D5                        521 00107$:
-                                    522 ;main.c:90: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
-      0001D5 0A                     523 	ld	a, (bc)
-      0001D6 4F                     524 	ld	c, a
-      0001D7 21r05r00               525 	ld	hl, #(_fishingRod + 1)
-                                    526 ;c:/gbdk/include/gb/gb.h:1247: OAM_item_t * itm = &shadow_OAM[nb];
-      0001DA 6E                     527 	ld	l, (hl)
-                                    528 ;	spillPairReg hl
-                                    529 ;	spillPairReg hl
-      0001DB 26 00                  530 	ld	h, #0x00
-                                    531 ;	spillPairReg hl
-                                    532 ;	spillPairReg hl
-      0001DD 29                     533 	add	hl, hl
-      0001DE 29                     534 	add	hl, hl
-      0001DF 11r00r00               535 	ld	de, #_shadow_OAM
-      0001E2 19                     536 	add	hl, de
-                                    537 ;c:/gbdk/include/gb/gb.h:1248: itm->y=y, itm->x=x;
-      0001E3 79                     538 	ld	a, c
-      0001E4 22                     539 	ld	(hl+), a
-      0001E5 36 54                  540 	ld	(hl), #0x54
-                                    541 ;main.c:90: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
-                                    542 ;main.c:92: }
-      0001E7 C3r51r01               543 	jp	00109$
-      0001EA                        544 ___str_0:
-      0001EA 50 52 45 53 53 20 53   545 	.ascii "PRESS START!"
+      00017A CDr00r00               438 	call	_joypad
+      00017D 7B                     439 	ld	a, e
+                                    440 ;main.c:70: line(80,0,80,fishingRod.yHook-16);
+      00017E 21r04r00               441 	ld	hl, #_fishingRod
+      000181 6E                     442 	ld	l, (hl)
+                                    443 ;	spillPairReg hl
+                                    444 ;main.c:78: fishingRod.yHook -= 1;
+      000182 4D                     445 	ld	c, l
+                                    446 ;main.c:75: switch(joypad()) {
+      000183 FE 04                  447 	cp	a, #0x04
+      000185 28 06                  448 	jr	Z, 00101$
+      000187 D6 08                  449 	sub	a, #0x08
+      000189 28 40                  450 	jr	Z, 00104$
+      00018B 18 61                  451 	jr	00107$
+                                    452 ;main.c:76: case J_UP:
+      00018D                        453 00101$:
+                                    454 ;main.c:77: if(fishingRod.yHook>20) {
+      00018D 3E 14                  455 	ld	a, #0x14
+      00018F 95                     456 	sub	a, l
+      000190 30 5C                  457 	jr	NC, 00107$
+                                    458 ;main.c:78: fishingRod.yHook -= 1;
+      000192 0D                     459 	dec	c
+      000193 21r04r00               460 	ld	hl, #_fishingRod
+      000196 71                     461 	ld	(hl), c
+                                    462 ;main.c:80: color(WHITE, WHITE, SOLID);
+      000197 AF                     463 	xor	a, a
+      000198 0F                     464 	rrca
+      000199 F5                     465 	push	af
+      00019A AF                     466 	xor	a, a
+      00019B F5                     467 	push	af
+      00019C 33                     468 	inc	sp
+      00019D CDr00r00               469 	call	_color
+      0001A0 E8 03                  470 	add	sp, #3
+                                    471 ;main.c:70: line(80,0,80,fishingRod.yHook-16);
+      0001A2 FAr04r00               472 	ld	a, (#_fishingRod + 0)
+                                    473 ;main.c:78: fishingRod.yHook -= 1;
+                                    474 ;main.c:81: line(80, fishingRod.yHook-16, 80, fishingRod.yHook-14);
+      0001A5 4F                     475 	ld	c, a
+      0001A6 C6 F2                  476 	add	a, #0xf2
+      0001A8 47                     477 	ld	b, a
+      0001A9 79                     478 	ld	a, c
+      0001AA C6 F0                  479 	add	a, #0xf0
+      0001AC C5                     480 	push	bc
+      0001AD 33                     481 	inc	sp
+      0001AE 26 50                  482 	ld	h, #0x50
+                                    483 ;	spillPairReg hl
+                                    484 ;	spillPairReg hl
+      0001B0 E5                     485 	push	hl
+      0001B1 33                     486 	inc	sp
+      0001B2 67                     487 	ld	h, a
+      0001B3 2E 50                  488 	ld	l, #0x50
+      0001B5 E5                     489 	push	hl
+      0001B6 CDr00r00               490 	call	_line
+      0001B9 E8 04                  491 	add	sp, #4
+                                    492 ;main.c:82: color(BLACK, BLACK, SOLID);
+      0001BB AF                     493 	xor	a, a
+      0001BC 67                     494 	ld	h, a
+      0001BD 2E 03                  495 	ld	l, #0x03
+      0001BF E5                     496 	push	hl
+      0001C0 3E 03                  497 	ld	a, #0x03
+      0001C2 F5                     498 	push	af
+      0001C3 33                     499 	inc	sp
+      0001C4 CDr00r00               500 	call	_color
+      0001C7 E8 03                  501 	add	sp, #3
+                                    502 ;main.c:84: break;
+      0001C9 18 23                  503 	jr	00107$
+                                    504 ;main.c:85: case J_DOWN:
+      0001CB                        505 00104$:
+                                    506 ;main.c:86: if(fishingRod.yHook<152) {
+      0001CB 7D                     507 	ld	a, l
+      0001CC D6 98                  508 	sub	a, #0x98
+      0001CE 30 1E                  509 	jr	NC, 00107$
+                                    510 ;main.c:87: fishingRod.yHook += 1;
+      0001D0 0C                     511 	inc	c
+      0001D1 21r04r00               512 	ld	hl, #_fishingRod
+      0001D4 71                     513 	ld	(hl), c
+                                    514 ;main.c:70: line(80,0,80,fishingRod.yHook-16);
+      0001D5 FAr04r00               515 	ld	a, (#_fishingRod + 0)
+                                    516 ;main.c:78: fishingRod.yHook -= 1;
+                                    517 ;main.c:88: line(80, fishingRod.yHook-16, 80, fishingRod.yHook-17);
+      0001D8 4F                     518 	ld	c, a
+      0001D9 C6 EF                  519 	add	a, #0xef
+      0001DB 47                     520 	ld	b, a
+      0001DC 79                     521 	ld	a, c
+      0001DD C6 F0                  522 	add	a, #0xf0
+      0001DF C5                     523 	push	bc
+      0001E0 33                     524 	inc	sp
+      0001E1 26 50                  525 	ld	h, #0x50
+                                    526 ;	spillPairReg hl
+                                    527 ;	spillPairReg hl
+      0001E3 E5                     528 	push	hl
+      0001E4 33                     529 	inc	sp
+      0001E5 67                     530 	ld	h, a
+      0001E6 2E 50                  531 	ld	l, #0x50
+      0001E8 E5                     532 	push	hl
+      0001E9 CDr00r00               533 	call	_line
+      0001EC E8 04                  534 	add	sp, #4
+                                    535 ;main.c:91: }
+      0001EE                        536 00107$:
+                                    537 ;main.c:92: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
+      0001EE 21r04r00               538 	ld	hl, #_fishingRod
+      0001F1 4E                     539 	ld	c, (hl)
+      0001F2 21r05r00               540 	ld	hl, #(_fishingRod + 1)
+                                    541 ;c:/gbdk/include/gb/gb.h:1247: OAM_item_t * itm = &shadow_OAM[nb];
+      0001F5 6E                     542 	ld	l, (hl)
+                                    543 ;	spillPairReg hl
+                                    544 ;	spillPairReg hl
+      0001F6 26 00                  545 	ld	h, #0x00
+                                    546 ;	spillPairReg hl
+                                    547 ;	spillPairReg hl
+      0001F8 29                     548 	add	hl, hl
+      0001F9 29                     549 	add	hl, hl
+      0001FA 11r00r00               550 	ld	de, #_shadow_OAM
+      0001FD 19                     551 	add	hl, de
+                                    552 ;c:/gbdk/include/gb/gb.h:1248: itm->y=y, itm->x=x;
+      0001FE 79                     553 	ld	a, c
+      0001FF 22                     554 	ld	(hl+), a
+      000200 36 54                  555 	ld	(hl), #0x54
+                                    556 ;main.c:92: move_sprite(fishingRod.hookSprite, 84,fishingRod.yHook);
+                                    557 ;main.c:94: }
+      000202 C3r63r01               558 	jp	00109$
+      000205                        559 ___str_0:
+      000205 50 52 45 53 53 20 53   560 	.ascii "PRESS START!"
              54 41 52 54 21
-      0001F6 00                     546 	.db 0x00
-      0001F7                        547 ___str_2:
-      0001F7 0A                     548 	.db 0x0a
-      0001F8 0A                     549 	.db 0x0a
-      0001F9 0A                     550 	.db 0x0a
-      0001FA 0A                     551 	.db 0x0a
-      0001FB 0A                     552 	.db 0x0a
-      0001FC 0A                     553 	.db 0x0a
-      0001FD 0A                     554 	.db 0x0a
-      0001FE 0A                     555 	.db 0x0a
-      0001FF 0A                     556 	.db 0x0a
-      000200 0A                     557 	.db 0x0a
-      000201 0A                     558 	.db 0x0a
-      000202 0A                     559 	.db 0x0a
-      000203 0A                     560 	.db 0x0a
-      000204 0A                     561 	.db 0x0a
-      000205 0A                     562 	.db 0x0a
-      000206 0A                     563 	.db 0x0a
-      000207 0A                     564 	.db 0x0a
-      000208 00                     565 	.db 0x00
-                                    566 	.area _CODE
-                                    567 	.area _INITIALIZER
-      000000                        568 __xinit__i:
-      000000 00                     569 	.db #0x00	; 0
-                                    570 	.area _CABS (ABS)
+      000211 00                     561 	.db 0x00
+      000212                        562 ___str_2:
+      000212 0A                     563 	.db 0x0a
+      000213 0A                     564 	.db 0x0a
+      000214 0A                     565 	.db 0x0a
+      000215 0A                     566 	.db 0x0a
+      000216 0A                     567 	.db 0x0a
+      000217 0A                     568 	.db 0x0a
+      000218 0A                     569 	.db 0x0a
+      000219 0A                     570 	.db 0x0a
+      00021A 0A                     571 	.db 0x0a
+      00021B 0A                     572 	.db 0x0a
+      00021C 0A                     573 	.db 0x0a
+      00021D 0A                     574 	.db 0x0a
+      00021E 0A                     575 	.db 0x0a
+      00021F 0A                     576 	.db 0x0a
+      000220 0A                     577 	.db 0x0a
+      000221 0A                     578 	.db 0x0a
+      000222 0A                     579 	.db 0x0a
+      000223 00                     580 	.db 0x00
+                                    581 	.area _CODE
+                                    582 	.area _INITIALIZER
+      000000                        583 __xinit__i:
+      000000 00                     584 	.db #0x00	; 0
+                                    585 	.area _CABS (ABS)
