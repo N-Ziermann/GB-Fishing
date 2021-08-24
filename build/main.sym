@@ -14,41 +14,44 @@ Symbol Table
     _LY_REG                                                        ****** GX
   0 _NUMBERS                                                       000070 GR
   0 _ROD                                                           000040 GR
-  0 ___str_1                                                       000662 R
-  0 ___str_3                                                       00067C R
+  0 ___str_1                                                       00068F R
+  0 ___str_3                                                       0006A9 R
     __divsint                                                      ****** GX
     __modsint                                                      ****** GX
-  7 __xinit__caughtFishIndex                                       000001 R
-  7 __xinit__score                                                 000000 R
+    __moduint                                                      ****** GX
+  7 __xinit__caughtFishIndex                                       000003 R
+  7 __xinit__framecounter                                          000000 R
+  7 __xinit__score                                                 000002 R
   1 _canArr                                                        000005 GR
-  2 _caughtFishIndex                                               000001 GR
-  0 _collideWith                                                   0003FA GR
+  2 _caughtFishIndex                                               000003 GR
+  0 _collideWith                                                   000425 GR
     _color                                                         ****** GX
-  0 _doesCollide                                                   000303 GR
+  0 _doesCollide                                                   00032E GR
   1 _fishArr                                                       000000 GR
-  1 _fishingRod                                                    00000E GR
-  0 _handleInput                                                   000489 GR
+  1 _fishingRod                                                    000011 GR
+  2 _framecounter                                                  000000 GR
+  0 _handleInput                                                   0004BE GR
   0 _hookX                                                         000112 GR
-  0 _init                                                          0001ED GR
+  0 _init                                                          000209 GR
     _initrand                                                      ****** GX
     _joypad                                                        ****** GX
     _line                                                          ****** GX
-  0 _main                                                          000506 GR
+  0 _main                                                          00053B GR
   0 _moveCanTo                                                     0001AE GR
   0 _moveFishTo                                                    000114 GR
-  0 _onCatchFish                                                   0003C4 GR
+  0 _onCatchFish                                                   0003EF GR
     _puts                                                          ****** GX
     _rand                                                          ****** GX
   0 _randomRange                                                   000000 GR
     _reset                                                         ****** GX
-  2 _score                                                         000000 GR
+  2 _score                                                         000002 GR
   0 _scoreHigherDigit                                              000111 GR
   0 _scoreLowerDigit                                               000110 GR
-  1 _seed                                                          000012 GR
+  1 _seed                                                          000015 GR
     _set_sprite_data                                               ****** GX
     _shadow_OAM                                                    ****** GX
   0 _spriteSize                                                    000113 GR
-  0 _storeFish                                                     0003D8 GR
+  0 _storeFish                                                     000403 GR
     _wait_vbl_done                                                 ****** GX
     _waitpad                                                       ****** GX
 
@@ -57,13 +60,13 @@ Hexadecimal [24-Bits]
 
 Area Table
 
-   0 _CODE                                      size    68E   flags    0
-   1 _DATA                                      size     14   flags    0
-   2 _INITIALIZED                               size      2   flags    0
+   0 _CODE                                      size    6BB   flags    0
+   1 _DATA                                      size     17   flags    0
+   2 _INITIALIZED                               size      4   flags    0
    3 _DABS                                      size      0   flags    8
    4 _HOME                                      size      0   flags    0
    5 _GSINIT                                    size      0   flags    0
    6 _GSFINAL                                   size      0   flags    0
-   7 _INITIALIZER                               size      2   flags    0
+   7 _INITIALIZER                               size      4   flags    0
    8 _CABS                                      size      0   flags    8
 
