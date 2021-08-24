@@ -12,6 +12,7 @@ struct fish {
         UINT8 x;
         UINT8 y;
         UINT8 sprites[2];
+        UINT8 index;
 };
 
 struct can {
@@ -37,7 +38,7 @@ const UINT8 scoreLowerDigit = 10;
 const UINT8 scoreHigherDigit = 11;
 const UINT8 hookX = 84;
 #define numFish 1
-#define numCans 1
+#define numCans 3
 Fish fishArr[numFish];
 Can canArr[numCans];
 Rod fishingRod;
@@ -46,33 +47,67 @@ INT8 caughtFishIndex = -1;
 UINT16 seed;
 const UINT8 spriteSize = 8;
 
+
+UINT8 randomRange(UINT8 start, UINT8 end) {
+        return start + ((UINT8)rand()) % (end - start + (UINT8)1);
+}
+
+// change speed by only moving fish every x frames
 void moveFishTo(Fish *f, UINT8 x, UINT8 y) {
-        f->x = x;
-        f->y = y;
-        move_sprite(f->sprites[0], x, y);
-        move_sprite(f->sprites[1], x-spriteSize, y);
+        if(f->index == caughtFishIndex) {
+                f->x = 0;
+                f->y = randomRange(40, 150);
+        } else {
+                f->x = x;
+                f->y = y;
+                if(f->x > 160) {
+                        f->y = randomRange(40, 150);
+                        f->x = 0;
+                }
+        }
+        move_sprite(f->sprites[0], f->x, f->y);
+        move_sprite(f->sprites[1], f->x - spriteSize, f->y);
+}
+
+void moveCanTo(Can *c, UINT8 x, UINT8 y) {
+        c->x = x;
+        c->y = y;
+        if(c->x > 160) {
+                c->y = randomRange(40, 150);
+                c->x = 0;
+        }
+        move_sprite(c->sprite, c->x, c->y);
 }
 
 void init() {
         // prepare Fish
         fishArr[0].sprites[0] = 1;
         fishArr[0].sprites[1] = 2;
+        fishArr[0].index = 0;
         set_sprite_data(1, 2, FISH);
         set_sprite_tile(fishArr[0].sprites[0], 1);
         set_sprite_tile(fishArr[0].sprites[1], 2);
         // prepare hook
-        fishingRod.yHook = 100;
+        fishingRod.yHook = 20;
         fishingRod.hookSprite = 3;
         fishingRod.hookSpriteFish = 4;
         fishingRod.spriteTile = 3;
         set_sprite_data(3, 4, ROD);
         set_sprite_tile(fishingRod.spriteTile, fishingRod.hookSprite);
         // prepare cans
+        set_sprite_data(5, 5, CAN);
         canArr[0].sprite = 5;
         canArr[0].x = 50;
         canArr[0].y = 125;
-        set_sprite_data(5, 5, CAN);
-        set_sprite_tile(5, canArr[0].sprite);
+        set_sprite_tile(canArr[0].sprite, 5);
+        canArr[1].sprite = 7;
+        canArr[1].x = 90;
+        canArr[1].y = 145;
+        set_sprite_tile(canArr[1].sprite, 5);
+        canArr[2].sprite = 8;
+        canArr[2].x = 70;
+        canArr[2].y = 105;
+        set_sprite_tile(canArr[2].sprite, 5);
         // prepare NUMBERS
         set_sprite_data(6, 15, NUMBERS);
         set_sprite_tile(scoreLowerDigit, 6);
@@ -80,10 +115,6 @@ void init() {
         // configure graphics
         DISPLAY_ON;
         SHOW_SPRITES;
-}
-
-UINT8 randomRange(UINT8 start, UINT8 end) {
-        return start + ((UINT8)rand()) % (end - start + (UINT8)1);
 }
 
 bool doesCollide(UINT8 x1, UINT8 y1, UINT8 x2, UINT8 y2) {
@@ -122,6 +153,7 @@ void collideWith() {
                 if(canArr[i].x != NULL) {
                         if( doesCollide(hookX + 1, fishingRod.yHook, canArr[i].x, canArr[i].y) ) {
                                 waitpad(J_START);
+                                reset();
                         }
                 }
         }
@@ -178,13 +210,17 @@ void main() {
                 UINT8 joydata = joypad();
                 handleInput();
                 moveFishTo(&fishArr[0], fishArr[0].x + 1, fishArr[0].y);
-                canArr[0].x +=1;
                 move_sprite(fishingRod.spriteTile, hookX, fishingRod.yHook);
-                move_sprite(canArr[0].sprite, canArr[0].x, canArr[0].y);
-                if(fishArr[0].x > 160) {
-                        fishArr[0].y = randomRange(40, 150);
-                        fishArr[0].x = 0;
-                }
+                //
+                // canArr[0].x +=1;
+                // canArr[1].x +=1;
+                // canArr[2].x +=1;
+                // move_sprite(canArr[0].sprite, canArr[0].x, canArr[0].y);
+                // move_sprite(canArr[1].sprite, canArr[1].x, canArr[1].y);
+                // move_sprite(canArr[2].sprite, canArr[2].x, canArr[2].y);
+                moveCanTo(&canArr[0], canArr[0].x + 1, canArr[0].y);
+                moveCanTo(&canArr[1], canArr[1].x + 1, canArr[1].y);
+                moveCanTo(&canArr[2], canArr[2].x + 1, canArr[2].y);
 
                 set_sprite_tile(scoreLowerDigit, 6 + (score % 10));
                 set_sprite_tile(scoreHigherDigit, 6 + (score / 10));
