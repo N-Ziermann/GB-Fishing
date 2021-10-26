@@ -14,8 +14,9 @@ Symbol Table
     _LY_REG                                                        ****** GX
   0 _NUMBERS                                                       000070 GR
   0 _ROD                                                           000040 GR
-  0 ___str_1                                                       00068F R
-  0 ___str_3                                                       0006A9 R
+  0 ___str_0                                                       0004DD R
+  0 ___str_2                                                       0006B9 R
+  0 ___str_4                                                       0006D3 R
     __divsint                                                      ****** GX
     __modsint                                                      ****** GX
     __moduint                                                      ****** GX
@@ -30,13 +31,15 @@ Symbol Table
   1 _fishArr                                                       000000 GR
   1 _fishingRod                                                    000011 GR
   2 _framecounter                                                  000000 GR
-  0 _handleInput                                                   0004BE GR
+    _gotogxy                                                       ****** GX
+    _gprintf                                                       ****** GX
+  0 _handleInput                                                   0004E8 GR
   0 _hookX                                                         000112 GR
   0 _init                                                          000209 GR
     _initrand                                                      ****** GX
     _joypad                                                        ****** GX
     _line                                                          ****** GX
-  0 _main                                                          00053B GR
+  0 _main                                                          000565 GR
   0 _moveCanTo                                                     0001AE GR
   0 _moveFishTo                                                    000114 GR
   0 _onCatchFish                                                   0003EF GR
@@ -60,7 +63,7 @@ Hexadecimal [24-Bits]
 
 Area Table
 
-   0 _CODE                                      size    6BB   flags    0
+   0 _CODE                                      size    6E5   flags    0
    1 _DATA                                      size     17   flags    0
    2 _INITIALIZED                               size      4   flags    0
    3 _DABS                                      size      0   flags    8

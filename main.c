@@ -158,6 +158,9 @@ void collideWith() {
         for(UINT8 i=0; i < numCans; i++) {
                 if(canArr[i].x != NULL) {
                         if( doesCollide(hookX + 1, fishingRod.yHook, canArr[i].x, canArr[i].y) ) {
+                                color(BLACK,WHITE,SOLID);
+                                gotogxy(5,8);
+                                gprintf("GAME OVER!");
                                 waitpad(J_START);
                                 reset();
                         }
