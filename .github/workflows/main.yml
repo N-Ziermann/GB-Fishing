@@ -1,0 +1,23 @@
+name: Gameboy Release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Build gbdk project
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v2
+    - name: Build
+      uses: wujood/gbdk-2020-github-builder@1.0.7
+      with:
+        subdirectory: ./src
+    - name: Upload binary to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./src/game.gb # Result file from build is called game.gb by default. Rename it with the output-name parameter.
+        asset_name: ROM # Rename this to what ever you want
+        tag: ${{ github.ref }}
