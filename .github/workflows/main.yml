@@ -18,6 +18,6 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./src/game.gb # Result file from build is called game.gb by default. Rename it with the output-name parameter.
-        asset_name: ROM # Rename this to what ever you want
+        file: ./src/game.gb
+        asset_name: Fishing.gb
         tag: ${{ github.ref }}
